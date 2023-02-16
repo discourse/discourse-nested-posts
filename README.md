@@ -1,5 +1,7 @@
-# **Plugin Name** Plugin
+# **Discourse Nested Posts** Plugin
 
-**Plugin Summary**
+This plugin adds the ability to display replies to posts in a nested format.
 
-For more information, please see: **url to meta topic**
+This is still in a very early stage of development, and is not ready for production use.
+
+~~For more information, please see: **url to meta topic**~~

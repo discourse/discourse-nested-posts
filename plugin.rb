@@ -1,12 +1,39 @@
 # frozen_string_literal: true
 
-# name: discourse-plugin-name
-# about: TODO
+# name: discourse-nested-posts
+# about: Enables displaying posts in a nested way by default
 # version: 0.0.1
-# authors: Discourse
+# authors: Sérgio Saquetim
 # url: TODO
-# required_version: 2.7.0
+# required_version: 3.0.0.beta1
 
-enabled_site_setting :plugin_name_enabled
+enabled_site_setting :nested_posts_enabled
 
-after_initialize {}
+after_initialize do
+  module ::NestedPosts
+    PLUGIN_NAME ||= "discourse-nested-posts".freeze
+
+    def self.enabled?
+      SiteSetting.nested_posts_enabled
+    end
+  end
+
+  %w[../app/models/post_extension.rb ../lib/topic_view_extension.rb].each do |path|
+    load File.expand_path(path, __FILE__)
+  end
+
+  reloadable_patch { Post.prepend(NestedPosts::PostExtension) }
+
+  add_to_serializer(:post, :nested_replies) do
+    ActiveModel::ArraySerializer.new(
+      object.nested_replies || [],
+      each_serializer: PostSerializer,
+      scope: scope,
+      root: false,
+    ).as_json
+  end
+
+  add_to_serializer(:post, :include_nested_replies?) do
+    NestedPosts.enabled? && object.nested_replies.present?
+  end
+end
