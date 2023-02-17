@@ -4,7 +4,7 @@
 ::TopicView.apply_custom_default_scope do |scope, topic_view|
   scope =
     scope.where(
-      "posts.post_number > 1 AND posts.reply_to_post_number IS NULL",
+      "posts.reply_to_post_number = 1 OR posts.reply_to_post_number IS NULL",
     ) if SiteSetting.nested_posts_enabled
 
   scope
@@ -24,6 +24,8 @@ end
     )
 
   topic_view.posts.each do |post|
+    next if post.post_number == 1
+
     post.nested_replies = nested_replies.select { |nr| nr.reply_to_post_number == post.post_number }
   end
 end

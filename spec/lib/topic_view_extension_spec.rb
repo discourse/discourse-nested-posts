@@ -21,19 +21,35 @@ RSpec.describe TopicView do
     it "filters the top level replies by default" do
       topic_view = TopicView.new(topic.id, user)
 
-      expect(topic_view.posts.size).to eq(2)
-      expect(topic_view.posts).to contain_exactly(post2, post3)
+      expect(topic_view.posts.size).to eq(3)
+      expect(topic_view.posts).to contain_exactly(post, post2, post3)
+    end
+
+    it "includes the OP in the posts" do
+      topic_view = TopicView.new(topic.id, user)
+
+      expect(topic_view.posts).to include(post)
+    end
+
+    it "does not nest replies to the OP" do
+      op_reply = Fabricate(:post, topic: topic, user: user, reply_to_post_number: post.post_number)
+      topic_view = TopicView.new(topic.id, user)
+
+      expect(topic_view.posts.find { |p| p.id == post.id }.nested_replies).to be_blank
+      expect(topic_view.posts).to include(op_reply)
     end
 
     it "preload the expected nested replies" do
       topic_view = TopicView.new(topic.id, user)
 
       expected_posts = topic_view.posts
-      expect(expected_posts.size).to eq(2)
+      expect(expected_posts.size).to eq(3)
 
       expected_replies = expected_posts.map(&:nested_replies)
-      expect(expected_replies[0]).to contain_exactly(*post2_replies)
-      expect(expected_replies[1]).to contain_exactly(*post3_replies)
+
+      expect(expected_replies[0]).to be_blank
+      expect(expected_replies[1]).to contain_exactly(*post2_replies)
+      expect(expected_replies[2]).to contain_exactly(*post3_replies)
     end
   end
 end
