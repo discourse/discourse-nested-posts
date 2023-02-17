@@ -11,7 +11,7 @@ export default {
     const nestedPosts = container.lookup("service:nested-posts");
 
     if (nestedPosts.isEnabled) {
-      withPluginApi("1.3.0", (api) => {
+      withPluginApi("1.6.0", (api) => {
         includePostAttributes(api);
         readSerializedRepliesBelowForPost(api, container);
       });
