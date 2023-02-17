@@ -1,1 +1,3 @@
 en:
+  site_settings:
+    nested_posts_enabled: "Enabled discourse-nested-posts"
