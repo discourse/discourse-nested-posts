@@ -21,7 +21,7 @@ end
   nested_replies =
     Post.where(topic_id: topic_view.topic.id, reply_to_post_number: post_numbers).secured(
       topic_view.guardian,
-    )
+    ).order(created_at: :asc)
 
   topic_view.posts.each do |post|
     next if post.post_number == 1
