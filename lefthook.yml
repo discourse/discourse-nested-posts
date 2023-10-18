@@ -13,21 +13,17 @@ pre-commit:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.js"
-      include: "assets/javascripts|test/javascripts"
-      run: yarn prettier --list-different {staged_files}
-    prettier-scss:
-      glob: "*.scss"
-      include: "assets/stylesheets"
-      run: yarn prettier --list-different {staged_files}
-    prettier-hbs:
-      glob: "*.hbs"
+      glob: "*.{js,gjs,gts,hbs,scss}"
       include: "assets/javascripts|test/javascripts"
       run: yarn prettier --list-different {staged_files}
     eslint:
-      glob: "*.js"
+      glob: "*.{js,gjs,gts}"
       include: "assets/javascripts|test/javascripts"
       run: yarn eslint -f compact {staged_files}
+    ember-template-lint:
+      glob: "*.{gjs,gts,hbs}"
+      include: "assets/javascripts"
+      run: yarn run ember-template-lint {staged_files}
 
 commands: &commands
   bundle-install:
@@ -62,7 +58,7 @@ fix-staged:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.{js,hbs,scss}"
+      glob: "*.{js,gjs,gts,hbs,scss}"
       include: "assets/javascripts|assets/stylesheets|test/javascripts"
       run: yarn prettier --write {staged_files}
 
@@ -79,8 +75,16 @@ fix-all:
         else
           echo "Stree config not detected for this repository. Skipping."
         fi
+    eslint:
+      glob: "*.{js,gjs,gts}"
+      include: "assets/javascripts|test/javascripts"
+      run: yarn eslint --fix {all_files}
+    ember-template-lint:
+      glob: "*.{gjs,gts,hbs}"
+      include: "assets/javascripts"
+      run: yarn run ember-template-lint --fix {all_files}
     prettier:
-      glob: "*.{js,hbs,scss}"
+      glob: "*.{js,gjs,gts,hbs,scss}"
       include: "assets/javascripts|assets/stylesheets|test/javascripts"
       run: yarn prettier --write {all_files}
 
@@ -99,15 +103,14 @@ lints:
           echo "Stree config not detected for this repository. Skipping."
         fi
     prettier:
-      glob: "*.js"
+      glob: "*.{js,gjs,gts,hbs,scss}"
       include: "assets/javascripts|test/javascripts"
       run: yarn prettier --list-different {all_files}
-    prettier-scss:
-      glob: "*.scss"
-      include: "assets/stylesheets"
-      run: yarn prettier --list-different {all_files}
-    eslint-assets-js:
-      run: yarn eslint assets/javascripts
-    eslint-test-js:
-      run: yarn eslint test/javascripts
-
+    eslint:
+      glob: "*.{js,gjs,gts}"
+      include: "assets/javascripts|test/javascripts"
+      run: yarn eslint {all_files}
+    ember-template-lint:
+      glob: "*.{gjs,gts,hbs}"
+      include: "assets/javascripts"
+      run: yarn run ember-template-lint {all_files}
