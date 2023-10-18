@@ -5,8 +5,7 @@
   "author": "Discourse",
   "license": "MIT",
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
-    "eslint-config-discourse": "^3.3.0",
-    "lefthook": "^1.2.0"
+    "eslint-config-discourse": "^5.0.0",
+    "lefthook": "^1.5.2"
   }
 }
