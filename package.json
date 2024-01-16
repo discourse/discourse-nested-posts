@@ -1,11 +1,10 @@
 {
   "name": "discourse-nested-posts",
-  "version": "0.0.1",
-  "repository": "TODO",
-  "author": "Discourse",
-  "license": "MIT",
+  "private": true,
   "devDependencies": {
-    "eslint-config-discourse": "^5.0.0",
-    "lefthook": "^1.5.2"
+    "@discourse/lint-configs": "^1.3.5",
+    "ember-template-lint": "^5.13.0",
+    "eslint": "^8.56.0",
+    "prettier": "^2.8.8"
   }
 }
