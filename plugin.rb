@@ -18,9 +18,8 @@ after_initialize do
     end
   end
 
-  %w[../app/models/post_extension.rb ../lib/topic_view_extension.rb].each do |path|
-    load File.expand_path(path, __FILE__)
-  end
+  require_relative "app/models/post_extension"
+  require_relative "lib/topic_view_extension"
 
   reloadable_patch { Post.prepend(NestedPosts::PostExtension) }
 
