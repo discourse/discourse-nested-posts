@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe TopicView do
-  fab!(:user) { Fabricate(:user) }
+  fab!(:user)
   fab!(:topic) { Fabricate(:topic, user: user) }
   fab!(:post) { Fabricate(:post_with_long_raw_content, topic: topic, user: user) }
   fab!(:post2) { Fabricate(:post, topic: topic, user: user) }
